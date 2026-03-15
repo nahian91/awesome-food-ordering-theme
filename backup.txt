@@ -1,0 +1,78 @@
+<style>
+/* Layout Container */
+.awesome-food-delivery {
+    display: flex;
+    position: relative;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.afd-left-tabs {
+    width: 200px;
+    margin: 0;
+    padding: 60px 0 0 0;
+    list-style: none;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.afd-left-tabs li a {
+    display: block;
+    padding: 12px 20px;
+    color: #eee;
+    text-decoration: none;
+}
+
+.afd-left-tabs li a.active {
+    background: #0073aa;
+    color: #fff;
+}
+
+/* Right Content Box */
+.afd-right-box {
+    flex-grow: 1;
+    transition: all 0.3s ease;
+    background: #fff;
+    padding: 40px 20px 20px 20px; /* Top padding to clear the button */
+}
+
+/* Text Toggle Styling */
+.afd-text-toggle {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 999;
+    cursor: pointer;
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    color: #444;
+}
+
+.afd-text-toggle:hover {
+    background: #e5e5e5;
+    color: #000;
+}
+
+/* HIDDEN STATE */
+.afd-sidebar-hidden .afd-left-tabs {
+    margin-left: -200px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.afd-sidebar-hidden .afd-right-box {
+    width: 100%;
+}
+
+/* Print Page Fix */
+.afd-print .afd-left-tabs, 
+.afd-print #afd-toggle-sidebar {
+    display: none !important;
+}
+</style>
