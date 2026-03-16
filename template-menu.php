@@ -1,4 +1,12 @@
 <?php
+
+/*
+Template Name: Menus
+*/
+
+get_header();?>
+
+<?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
     wp_enqueue_style('dashicons');

@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+
+/*
+Template Name: Reviews
+*/
+
+get_header();?>
 
 <div class="breadcrumb-area bg-cover text-center text-light" style="background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/breadcumb.jpg);">
     <div class="container">

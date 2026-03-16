@@ -1,5 +1,9 @@
 <?php
 
+/*
+Template Name: Account
+*/
+
 get_header();
 
 // 1. SECURITY & INITIALIZATION

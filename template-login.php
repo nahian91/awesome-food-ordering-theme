@@ -1,5 +1,9 @@
 <?php
 
+/*
+Template Name: Login
+*/
+
 get_header();
 
 // 2. Handle login submission

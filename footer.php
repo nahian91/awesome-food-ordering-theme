@@ -13,81 +13,137 @@
 <footer class="bg-dark footer-style-one text-light">
         <div class="container">
             <div class="row">
-    <div class="col-lg-3 col-md-6 footer-item mt-50">
-        <div class="f-item about">
-            <p>
-                Welcome to Spice of India, where every dish tells a story of tradition, passion, and the vibrant culture of the East.
-            </p>                
-        </div>
-    </div>
-
-    <div class="col-lg-2 col-md-6 mt-50 footer-item">
-        <div class="f-item link">
-            <h4 class="widget-title">Quick Links</h4>
-            <?php wp_nav_menu(['theme_location' => 'menu-2']); ?>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 mt-50 footer-item">
-        <div class="f-item opening-hours">
-            <h4 class="widget-title">Opening Hours</h4>
-            <ul style="list-style: none; padding: 0; margin: 0; color: #fff;">
-                <?php 
-                $schedule = get_option('afd_schedule', []);
-                $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                
-                foreach ($days as $day) : 
-                    $data = isset($schedule[$day]) ? $schedule[$day] : null;
-                    $is_open = ($data && !empty($data['enabled']));
-                    ?>
-                    <li style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
-                        <span style="font-weight: 600;"><?php echo $day; ?></span>
-                        <span>
-                            <?php echo $is_open ? esc_html($data['open'] . ' - ' . $data['close']) : '<span style="color: #ef4444;">Closed</span>'; ?>
-                        </span>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-md-6 footer-item mt-50 ml-50">
-        <div class="f-item contact">
-            <h4 class="widget-title">Contact Info</h4>
-            <ul>
-                <li class="wow fadeInUp" style="margin-bottom:15px">
-                    <div class="content">
-                        <h5 style="margin-bottom: 0; font-size: 15px;">Address</h5>
-                        <small>123 Street, Sylhet, Bangladesh</small>
+                <!-- Singel Item -->
+                <div class="col-lg-3 col-md-6 footer-item mt-50">
+                    <div class="f-item about">
+                        <img src="assets/img/logo-3.png" alt="Image Not Found">
+                        <p>
+                            Discover culinary delights recipes and inspiration in our food haven.
+                        </p>
+                        <ul class="opening-list">
+                            <li>
+                                Mon  -  Fri <span class="text-end">8:00 AM  -  6:00 PM</span>
+                            </li>
+                            <li>
+                                Saturday <span class="text-end">9:00 AM  -  5:00 PM</span>
+                            </li>
+                        </ul>                  
                     </div>
-                </li>
-                <li class="wow fadeInUp" style="margin-bottom:15px">
-                    <div class="content">
-                        <h5 style="margin-bottom: 0; font-size: 15px;">Phone</h5>
-                        <small>+880 1234 567890</small>
-                    </div>
-                </li>
-                <li class="wow fadeInUp" style="margin-bottom:15px">
-                    <div class="content">
-                        <h5 style="margin-bottom: 0; font-size: 15px;">Email</h5>
-                        <small>info@spiceofindia.com</small>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+                </div>
+                <!-- End Singel Item -->
 
+                <!-- Singel Item -->
+                <div class="col-lg-2 col-md-6 mt-50 footer-item pl-50 pl-md-15 pl-xs-15">
+                    <div class="f-item link">
+                        <h4 class="widget-title">Explore</h4>
+                        <ul>
+                            <li>
+                                <a href="about-us.html">Compnay Profile</a>
+                            </li>
+                            <li>
+                                <a href="about-us.html">About</a>
+                            </li>
+                            <li>
+                                <a href="contact-us.html">Help Center</a>
+                            </li>
+                            <li>
+                                <a href="contact-us.html">Career</a>
+                            </li>
+                            <li>
+                                <a href="about-us.html">Features</a>
+                            </li>
+                            <li>
+                                <a href="contact-us.html">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Singel Item -->
+
+                <!-- Singel Item -->
+                <div class="col-lg-3 col-md-6 footer-item  mt-50">
+                    <div class="f-item contact">
+                        <h4 class="widget-title">Contact Info</h4>
+                        <ul class="contact-widget">
+                            <li>
+                                <div class="icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="content">
+                                    175 10h Street, Office 375 Berlin, De 21562
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="content">
+                                    <a href="tel:2151234567">+123 34598768</a> <br> <a href="tel:2151234567">+554 34598734</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="content">
+                                    <a href="mailto:name@email.com">food@restan.com</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Singel Item -->
+
+                <!-- Singel Item -->
+                <div class="col-lg-4 col-md-6 footer-item mt-50">
+                    <div class="f-item newsletter">
+                        <h4 class="widget-title">Newsletter</h4>
+                        <p>
+                            Join our subscribers list to get the latest news and special offers.
+                        </p>
+                        <form action="#">
+                            <input type="email" placeholder="Your Email" class="form-control" name="email">
+                            <button type="submit"> Subscribe <i class="fas fa-long-arrow-right"></i></button>  
+                        </form>
+                        <div class="footer-socila-items mt-30">
+                            <h4>Social Meida: </h4>
+                            <ul class="footer-social">
+                                <li>
+                                    <a href="#">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Singel Item -->
+
+
+            </div>
+
+            <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <div class="row align-center">
                     <div class="col-lg-6">
                         <p>
-                            © Copyright <?php echo date('Y'); ?>. All Rights Reserved
+                            © Copyright 2025 Foodu. All Rights Reserved
                         </p>
                     </div>
                 </div>
             </div>
-            </div>
+            <!-- End Footer Bottom -->
+        </div>
     </footer>
     <?php wp_footer(); ?>
 

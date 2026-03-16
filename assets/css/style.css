@@ -4441,3 +4441,102 @@ ul.footer-social li a:hover {
   from { transform: translateY(-100%); }
   to { transform: translateY(0); }
 }
+
+
+/* ============================================================== 
+    # Chef
+=================================================================== */
+
+@media (min-width: 1024px) {
+	.chef-one-single:nth-last-child(2n) {
+		margin-top: 80px;
+	}
+}
+
+.chef-style-one-item .info {
+	margin-top: 30px;
+}
+
+.chef-style-one-item .info h4 {
+	margin-bottom: 5px;
+}
+
+.chef-style-one-item .info span {
+	text-transform: uppercase;
+}
+
+.chef-style-one-item .thumb {
+	position: relative;
+	z-index: 1;
+}
+
+.chef-style-one-item .thumb img {
+    border-radius: 10px;
+}
+
+.chef-one-social {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: absolute;
+	left: 50%;
+	bottom: 50px;
+	transform: translateX(-50%);
+	width: 100%;
+	text-align: center;
+}
+
+.chef-style-one-item li {
+	display: inline-block;
+	margin: 0 1px;
+}
+
+.chef-style-one-item li a {
+	display: inline-block;
+}
+
+.chef-style-one-item li i {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
+	background: var(--color-primary);
+	line-height: 40px;
+	border-radius: 50%;
+	color: var(--white);
+	position: relative;
+	bottom: -30px;
+	opacity: 0;
+	visibility: hidden;
+	text-align: center;
+	transition: all 0.35s ease-in-out;
+}
+
+.chef-one-social li:nth-child(2) a i {
+	transition: all 0.55s ease-in-out;
+}
+
+.chef-one-social li:nth-child(3) a i {
+	transition: all 0.75s ease-in-out;
+}
+
+.chef-style-one-item:hover .chef-one-social li a i {
+	bottom: 0;
+	opacity: 1;
+	visibility: visible;
+}
+
+.chef-one-social li .fa-facebook-f {
+	background: #3B5998;
+}
+
+.chef-one-social li i.fa-twitter {
+	background: #1DA1F2;
+}
+
+.chef-one-social li i.fa-dribbble {
+	background: #ea4c89;
+}
+
+.chef-one-social li i.fa-linkedin-in {
+	background: #0077B5;
+}

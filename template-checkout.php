@@ -1,5 +1,13 @@
 <?php
 
+/*
+Template Name: Checkout
+*/
+
+get_header();?>
+
+<?php
+
 /**
  * 1. SERVER-SIDE ENGINE (Header Redirect Protocol)
  */

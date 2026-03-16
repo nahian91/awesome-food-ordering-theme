@@ -132,7 +132,7 @@ function awesome_food_delivery_scripts() {
 	// wp_enqueue_style( 'datepicker', $theme_uri . '/assets/css/bootstrap-datepicker3.css', array(), _S_VERSION );
 	wp_enqueue_style( 'validnavs', $theme_uri . '/assets/css/validnavs.css', array(), _S_VERSION );
 	wp_enqueue_style( 'helper', $theme_uri . '/assets/css/helper.css', array(), _S_VERSION );
-	// wp_enqueue_style( 'unit-test', $theme_uri . '/assets/css/unit-test.css', array(), _S_VERSION );
+	wp_enqueue_style( 'unit-test', $theme_uri . '/assets/css/unit-test.css', array(), _S_VERSION );
 	// wp_enqueue_style( 'shop', $theme_uri . '/assets/css/shop.css', array(), _S_VERSION );
 	wp_enqueue_style( 'main-style', $theme_uri . '/assets/css/style.css', array(), _S_VERSION );
 	wp_enqueue_style( 'responsive-style', $theme_uri . '/assets/css/responsive.css', array(), _S_VERSION );
@@ -224,17 +224,36 @@ add_action('init', function(){
 });
 
 /*--------------------------------------------------------------
-# 2. Admin Menu
+# 1. External Files Requirement
+--------------------------------------------------------------*/
+// ফাইলটি অ্যাকশন হুকের বাইরে রিকোয়ার করা ভালো যাতে ফাংশনগুলো গ্লোবালি অ্যাভেলেবল থাকে
+require_once get_template_directory() . '/inc/admin/theme-settings.php';
+
+/*--------------------------------------------------------------
+# 2. Admin Menus Registration
 --------------------------------------------------------------*/
 add_action('admin_menu', function(){
+    
+    // মেইন ফুড ডেলিভারি মেনু
     add_menu_page(
         'Food Delivery',
         'Food Delivery',
         'manage_options',
         'awesome_food_delivery',
-        'fd_main_page', // This function must exist to render the page
+        'fd_main_page', 
         'dashicons-carrot',
         20
+    );
+
+    // থিম সেটিংস মেনু (আলাদা মেইন মেনু হিসেবে)
+    add_menu_page(
+        'Theme Settings',        
+        'Theme Settings',        
+        'manage_options',        
+        'theme_settings',        
+        'afd_theme_settings_render', 
+        'dashicons-admin-appearance', 
+        60                       
     );
 });
 
@@ -445,32 +464,124 @@ require_once get_template_directory() . '/inc/admin/dashboard.php';
 require_once get_template_directory() . '/inc/admin/orders.php';
 require_once get_template_directory() . '/inc/admin/items.php';
 require_once get_template_directory() . '/inc/admin/categories.php';
-//require_once get_template_directory() . '/inc/extras.php';
 require_once get_template_directory() . '/inc/admin/report.php';
 require_once get_template_directory() . '/inc/admin/customers.php';
 require_once get_template_directory() . '/inc/admin/settings.php';
-require_once get_template_directory() . '/inc/frontend/frontend.php';
-
 
 /*--------------------------------------------------------------
-# Auto-Create Pages on Activation
+# THE OMNI-AUTOMATION: PAGES, STATES, MENU & HEADER HIDING
 --------------------------------------------------------------*/
+
+/**
+ * ১. থিম অ্যাক্টিভেশনের সময় পেজ এবং মেনু অটোমেশন
+ */
 add_action('after_switch_theme', function() {
-    $pages = [
-        'menu'     => ['title' => 'Our Menu', 'content' => '[afd_food_menu]'],
-        'checkout' => ['title' => 'Checkout', 'content' => '[afd_checkout]'],
-        'thanks'   => ['title' => 'Thank You', 'content' => '[afd_order_success]'],
+    $brand = 'AFD';
+    
+    // পেজ কনফিগারেশন: স্ল্যাগ => [টাইটেল, শর্টকোড]
+    $pages_setup = [
+        'home'           => ['title' => "Home - $brand",           'content' => '[afd_home]'],
+        'about'          => ['title' => "About - $brand",          'content' => '[afd_about]'],
+        'shop'           => ['title' => "Shop - $brand",           'content' => '[afd_shop]'],
+        'checkout'       => ['title' => "Checkout - $brand",       'content' => '[afd_checkout]'],
+        'account'        => ['title' => "My Account - $brand",     'content' => '[afd_account]'],
+        'order-tracking' => ['title' => "Track Order - $brand",    'content' => '[afd_order_tracking]'],
+        'contact'        => ['title' => "Contact - $brand",        'content' => '[afd_contact]'],
+        'thanks'         => ['title' => "Thank You - $brand",      'content' => '[afd_thanks]'],
     ];
 
-    foreach ($pages as $slug => $data) {
-        if (!get_page_by_path($slug)) {
-            wp_insert_post([
+    // যে পেজগুলো মেনুতে যুক্ত হবে (সিরিয়াল অনুযায়ী)
+    $menu_pages = ['home', 'shop', 'about', 'contact']; 
+    $added_ids  = [];
+
+    // পেজ তৈরি লুপ
+    foreach ($pages_setup as $slug => $data) {
+        $page_obj = get_page_by_path($slug);
+        
+        if (!$page_obj) {
+            $page_id = wp_insert_post([
                 'post_type'    => 'page',
                 'post_title'   => $data['title'],
                 'post_content' => $data['content'],
                 'post_status'  => 'publish',
                 'post_name'    => $slug
             ]);
+        } else {
+            $page_id = $page_obj->ID;
         }
+
+        if ($page_id) {
+            update_option("_afd_page_{$slug}", $page_id);
+            if (in_array($slug, $menu_pages)) {
+                $added_ids[$slug] = $page_id;
+            }
+        }
+    }
+
+    // মেনু অটো-ক্রিয়েশন
+    $menu_name   = 'Primary Menu';
+    $menu_exists = wp_get_nav_menu_object($menu_name);
+
+    if (!$menu_exists) {
+        $menu_id = wp_create_nav_menu($menu_name);
+
+        foreach ($menu_pages as $slug) {
+            if (isset($added_ids[$slug])) {
+                wp_update_nav_menu_item($menu_id, 0, [
+                    'menu-item-title'     => str_replace(" - $brand", "", get_the_title($added_ids[$slug])),
+                    'menu-item-object-id' => $added_ids[$slug],
+                    'menu-item-object'    => 'page',
+                    'menu-item-type'      => 'post_type',
+                    'menu-item-status'    => 'publish',
+                ]);
+            }
+        }
+
+        // থিমের 'primary' মেনু লোকেশনে সেট করা
+        $locations = get_theme_mod('nav_menu_locations');
+        $locations['primary'] = $menu_id; 
+        set_theme_mod('nav_menu_locations', $locations);
+    }
+});
+
+/**
+ * ২. ড্যাশবোর্ডে পোস্ট স্টেট (Post States) দেখানো
+ */
+add_filter('display_post_states', function($post_states, $post) {
+    $labels = [
+        'home'           => 'Home Page',
+        'about'          => 'About Page',
+        'shop'           => 'Shop Page',
+        'checkout'       => 'Checkout Page',
+        'account'        => 'Account Page',
+        'order-tracking' => 'Tracking Page',
+        'contact'        => 'Contact Page',
+        'thanks'         => 'Thank You Page',
+    ];
+
+    foreach ($labels as $slug => $label) {
+        if ((int)get_option("_afd_page_{$slug}") === $post->ID) {
+            $post_states[] = __($label, 'afd');
+        }
+    }
+    return $post_states;
+}, 10, 2);
+
+/**
+ * ৩. অটোমেটিক Entry Header রিমুভ করা (CSS Method)
+ */
+add_action('wp_head', function() {
+    $special_pages = ['home', 'about', 'shop', 'checkout', 'account', 'order-tracking', 'contact', 'thanks'];
+    $is_special = false;
+
+    foreach ($special_pages as $slug) {
+        if (is_page(get_option("_afd_page_{$slug}"))) {
+            $is_special = true;
+            break;
+        }
+    }
+
+    if ($is_special) {
+        echo '<style>.entry-header, .page-header, .entry-title { display: none !important; }</style>';
     }
 });
